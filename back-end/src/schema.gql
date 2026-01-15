@@ -1,0 +1,14 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserResponseDto {
+  id: Int!
+  name: String!
+  email: String!
+}
+
+type Query {
+  teste(nameTeste2: String!): String!
+  getAll: [UserResponseDto!]!
+}
