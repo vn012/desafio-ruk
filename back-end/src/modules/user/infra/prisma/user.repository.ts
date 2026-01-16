@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { user } from '../../domain/user.entity';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserRepository {
+    constructor(private readonly prisma: PrismaService) {}
   // //#region GET
   // async findAll(): Promise<user[]> {
   //   return database.users;
   // }
-  async findAll(): Promise<any[]> {
-    return prisma.user.findMany();
+  async findAll(): Promise<any> {
+    // return this.prisma.user.findMany();
   }
 
   // async findById(id: number): Promise<User | null> {
