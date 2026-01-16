@@ -1,6 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { user } from '../../domain/user.entity';
-// import { PrismaClient } from '@prisma/client';
+
+@Injectable()
+export class UserRepository {
+  // //#region GET
+  // async findAll(): Promise<user[]> {
+  //   return database.users;
+  // }
+  async findAll(): Promise<any[]> {
+    return prisma.user.findMany();
+  }
+
+  // async findById(id: number): Promise<User | null> {
+  //     return this.prisma.user.findUnique({ where: { id } });
+  // }
+
+  async teste(teste: string): Promise<string> {
+    return teste;
+  }
+  //#endregion
+
+  //#region  CREATE
+
+  //#endregion
+
+  //#region UPDATE
+  //#endregion
+
+  //#region DELETE
+  //#endregion
+}
+
 
 export const database = {
   users: [
@@ -25,32 +55,3 @@ export const database = {
     ),
   ],
 };
-
-@Injectable()
-export class UserRepository {
-  // private prisma = new PrismaClient();
-
-  // //#region GET
-  async findAll(): Promise<user[]> {
-    return database.users;
-  }
-
-  // async findById(id: number): Promise<User | null> {
-  //     return this.prisma.user.findUnique({ where: { id } });
-  // }
-
-  async teste(teste: string): Promise<string> {
-    return teste;
-  }
-  //#endregion
-
-  //#region  CREATE
-
-  //#endregion
-
-  //#region UPDATE
-  //#endregion
-
-  //#region DELETE
-  //#endregion
-}

@@ -9,6 +9,34 @@ generator client {
   output   = "../generated/prisma"
 }
 
+
 datasource db {
   provider = "postgresql"
+}
+
+
+model User {
+  id          Int          @id @default(autoincrement())
+  name        String
+  email       String       @unique
+  password    String
+
+  telephones  Telephone[]
+
+  created_at  DateTime     @default(now())
+  modified_at DateTime?
+  deleted_at  DateTime?
+
+  @@map("users")
+}
+
+model Telephone {
+  id         Int    @id @default(autoincrement())
+  number     Int
+  area_code Int
+
+  user_id   Int
+  user      User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("telephones")
 }
