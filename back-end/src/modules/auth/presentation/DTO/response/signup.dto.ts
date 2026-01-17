@@ -12,14 +12,3 @@ export class SignupDto {
   modified_at?: string;
 }
 
-@ObjectType()
-export class SignupResponseDto {
-  @Field(() => Int)
-  statusCode: number;
-
-  @Field()
-  message: string;
-
-  @Field(() => SignupDto)
-  data: SignupDto;
-}

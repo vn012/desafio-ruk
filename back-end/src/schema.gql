@@ -41,7 +41,7 @@ type Query {
 type Mutation {
   createUser(data: UserRequestDto!): UserResponseDto!
   SignIn(email: String!, password: String!): AuthResponseDto!
-  signUp(data: UserRequestDto!): SignupResponseDto!
+  SignUp(data: UserRequestDto!): SignupResponseDto!
 }
 
 input UserRequestDto {
