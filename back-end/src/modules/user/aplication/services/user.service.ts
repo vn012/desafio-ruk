@@ -7,19 +7,11 @@ import { User } from 'generated/prisma/browser';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  //   async findAll(): Promise<User[]> {
-  //     return this.userRepository.findAll();
-  //   }
-
   //   async findById(id: number): Promise<User | null> {
   //     return this.userRepository.findById(id);
   //   }
 
-  //   async create(name: string, email: string): Promise<User> {
-  //     return this.userRepository.create({ name, email });
-  //   }
-
-  async finAll(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     return await this.userRepository.findAll();
   }
 

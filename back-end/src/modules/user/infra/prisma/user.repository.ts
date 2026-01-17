@@ -1,18 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UserRequestDto } from '../../presentation/DTO/request/user-request.dto';
-import { UserResponseDto } from '../../presentation/DTO/response/user-response.dto';
 import { User } from 'generated/prisma/client';
 import { CreateDbUserDto } from '../../aplication/DTO/create-db-user.dto';
 
 @Injectable()
 export class UserRepository {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
   //#region GET
 
-  async findAll(): Promise<UserResponseDto[]> {
-    console.log('Acessando o banco de dados para buscar todos os usuários...');
-    return this.prisma.user.findMany();
+  async findAll(): Promise<User[]> {
+    const res = await this.prisma.user.findMany();
+    return res;
   }
 
   // async findById(id: number): Promise<User | null> {
