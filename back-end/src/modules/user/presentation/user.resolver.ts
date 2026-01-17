@@ -29,7 +29,14 @@ export class UserResolver {
 
     if (!user) return null;
 
-    return user;
+    const res: UserResponseDto = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      password: '',
+      created_at: user.created_at,
+    }
+    return res;
   }
 
   @Mutation(() => UserResponseDto, { name: 'createUser' })
