@@ -17,6 +17,7 @@ scalar DateTime
 
 type Query {
   getAll: [UserResponseDto!]!
+  getUserById(id: Float!): UserResponseDto!
 }
 
 type Mutation {

@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { UserService } from '../aplication/services/user.service';
 import { UserResponseDto } from './DTO/response/user-response.dto';
 import { UserRequestDto } from './DTO/request/user-request.dto';
@@ -23,15 +23,14 @@ export class UserResolver {
     return res;
   }
 
-  //   @Query(() => [User])
-  //   async users() {
-  //     return this.userService.findAll();
-  //   }
+  @Query(() => UserResponseDto, { name: 'getUserById' })
+  async getUserById(@Args('id') id: number): Promise<UserResponseDto | null> {
+    const user = await this.userService.findById(id);
 
-  //   @Query(() => User, { nullable: true })
-  //   async user(@Args('id', { type: () => Int }) id: number) {
-  //     return this.userService.findById(id);
-  //   }
+    if (!user) return null;
+
+    return user;
+  }
 
   @Mutation(() => UserResponseDto, { name: 'createUser' })
   async createUser(
