@@ -1,24 +1,24 @@
-import { Injectable } from '@nestjs/common';
-import { UserService } from 'src/modules/user/aplication/services/user.service';
+// import { Injectable } from '@nestjs/common';
+// import { UserService } from 'src/modules/user/aplication/services/user.service';
 
-@Injectable()
-export class AuthService {
-  constructor(private readonly userService: UserService) { }
+// @Injectable()
+// export class AuthService {
+//   constructor(private readonly userService: UserService) { }
 
-  async auth(email: string, password: string): Promise<any> {
-    let user = this.userService.findAll()[0];
-    if (!user.email)
-        return "Usuario ou senha invalido";
+//   async auth(email: string, password: string): Promise<any> {
+//     let user = this.userService.findAll()[0];
+//     if (!user.email)
+//         return "Usuario ou senha invalido";
 
-    if (user.email === email && user.password === password) {
-        var token = this.GenerateJwtToken(user.name);
-        return token;
-        }
-    }
+//     if (user.email === email && user.password === password) {
+//         var token = this.GenerateJwtToken(user.name);
+//         return token;
+//         }
+//     }
 
-    GenerateJwtToken(userName: string): string {
+//     GenerateJwtToken(userName: string): string {
 
-        return `ASDUISFHIL#$@&*FDSFHSEF${userName}`;
-    }
+//         return `ASDUISFHIL#$@&*FDSFHSEF${userName}`;
+//     }
 
-}
+// }

@@ -43,7 +43,7 @@ export class UserResolver {
   async createUser(
     @Args('data') data: UserRequestDto,
   ): Promise<UserResponseDto> {
-    const user = await this.userService.createUser(data);
+    const user = await this.userService.create(data);
 
     // Necessário fazer o automapping manual aqui
     const res: UserResponseDto = {

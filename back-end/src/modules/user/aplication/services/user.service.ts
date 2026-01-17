@@ -12,6 +12,11 @@ export class UserService {
 
     return user;
   }
+  async findByEmail(email: string): Promise<User | null> {
+    const user = await this.userRepository.findByEmail(email);
+
+    return user;
+  }
 
   async findAll(): Promise<User[]> {
     return await this.userRepository.findAll();
@@ -19,7 +24,7 @@ export class UserService {
   //#endregion
 
   //#region CREATE
-  async createUser(data: CreateDbUserDto): Promise<User> {
+  async create(data: CreateDbUserDto): Promise<User> {
     const res = this.userRepository.create(data);
     return res;
   }

@@ -1,4 +1,13 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, Int } from '@nestjs/graphql';
+
+@InputType()
+export class TelephoneInput {
+  @Field(() => Int)
+  number: number;
+
+  @Field(() => Int)
+  area_code: number;
+}
 
 @InputType()
 export class UserRequestDto {
@@ -10,4 +19,7 @@ export class UserRequestDto {
 
   @Field()
   password: string;
+
+  @Field(() => [TelephoneInput])
+  telephones: TelephoneInput[];
 }
