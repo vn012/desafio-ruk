@@ -1,20 +1,21 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { AuthService } from '../aplication/services/auth.service';
 import { AuthResponseDto } from './DTO/response/auth-response.dto';
-import { UserRequestDto } from 'src/modules/user/presentation/DTO/request/user-request.dto';
 import { SignupDto } from './DTO/response/signup.dto';
 import { Public } from '../aplication/public.decorator';
-import type { MutationResolvers, MutationSignInArgs } from 'src/graphql/generated';
-import { MutationSignUpArgs } from 'src/modules/user/presentation/DTO/request/mutation-signup.args';
+import { SignUpRequestDto } from './DTO/request/signup-request.dto';
+import { SignInRequestDto } from './DTO/request/signIn-request.dto';
+
 @Resolver()
-export class AuthResolver implements MutationResolvers {
+export class AuthResolver {
   
   constructor(private readonly authService: AuthService) { }
   @Mutation(() => AuthResponseDto, { name: 'SignIn' })
+  @Public()
   async SignIn(
     _parent: any,
-    args: MutationSignInArgs,
-  ): Promise<string> {
+    @Args('args') args: SignInRequestDto,
+  ): Promise<AuthResponseDto> {
     const { email, password } = args;
     return this.authService.auth(email, password);
   }
@@ -24,20 +25,13 @@ export class AuthResolver implements MutationResolvers {
   @Public()
   async signUp(
      _parent: any,
-    @Args() args: MutationSignUpArgs,
+    @Args('args') args: SignUpRequestDto,
   ): Promise<SignupDto> {
     console.log("ioe")
-    const user = await this.authService.signUp(args.data);
+    const user = await this.authService.signUp(args);
 
-    return {
-      id: user.id.toString(),
-      created_at: user.created_at.toString(),
-      modified_at: user.modified_at?.toString(),
-    };
+
+    return user
+    
   }
-
-
-
-
-
 }

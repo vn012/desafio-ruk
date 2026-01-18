@@ -40,13 +40,13 @@ export class AuthService {
     });
 
     return {
-      id: user.id,
       created_at: user.created_at.toISOString(),
+      id: user.id.toString(),
       modified_at: user.modified_at?.toISOString(),
     };
   }
   
-  async auth(email: string, password: string): Promise<string> {
+  async auth(email: string, password: string) {
     const user = await this.validateUser(email, password);
     if (!user) throw new UnauthorizedException('Credenciais inválidas');
   
@@ -55,7 +55,10 @@ export class AuthService {
       email: user.email,
     };
 
-    return this.jwtService.sign(payload);
+    const token  ={
+      token: this.jwtService.sign(payload),
+    }
+    return token
   }
 
   //#region aux

@@ -10,7 +10,7 @@ export class TelephoneInput {
 }
 
 @InputType()
-export class UserRequestDto {
+export class SignUpRequestDto {
   @Field()
   name: string;
 
