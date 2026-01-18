@@ -4,28 +4,30 @@ import { AuthResponseDto } from './DTO/response/auth-response.dto';
 import { UserRequestDto } from 'src/modules/user/presentation/DTO/request/user-request.dto';
 import { SignupDto } from './DTO/response/signup.dto';
 import { Public } from '../aplication/public.decorator';
-
+import type { MutationResolvers, MutationSignInArgs } from 'src/graphql/generated';
+import { MutationSignUpArgs } from 'src/modules/user/presentation/DTO/request/mutation-signup.args';
 @Resolver()
-export class AuthResolver {
+export class AuthResolver implements MutationResolvers {
+  
   constructor(private readonly authService: AuthService) { }
-
   @Mutation(() => AuthResponseDto, { name: 'SignIn' })
-  @Public()
-  async signIn(
-    @Args('email') email: string,
-    @Args('password') password: string,
-  ) {
-    return {
-      token: await this.authService.auth(email, password),
-    };
+  async SignIn(
+    _parent: any,
+    args: MutationSignInArgs,
+  ): Promise<string> {
+    const { email, password } = args;
+    return this.authService.auth(email, password);
   }
 
-  @Mutation(() => SignupDto, { name: "SignUp" })
+
+  @Mutation(() => SignupDto, { name: "signUp" })
   @Public()
   async signUp(
-    @Args('data') data: UserRequestDto,
+     _parent: any,
+    @Args() args: MutationSignUpArgs,
   ): Promise<SignupDto> {
-    const user = await this.authService.signUp(data);
+    console.log("ioe")
+    const user = await this.authService.signUp(args.data);
 
     return {
       id: user.id.toString(),
@@ -33,6 +35,7 @@ export class AuthResolver {
       modified_at: user.modified_at?.toString(),
     };
   }
+
 
 
 

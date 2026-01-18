@@ -7,18 +7,19 @@ import {
 import * as bcrypt from 'bcrypt';
 import { UserService } from 'src/modules/user/aplication/services/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { AuthResponseDto } from '../../presentation/DTO/response/auth-response.dto';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly userService: UserService, private jwtService: JwtService) {}
 
   async signUp(data: {
-    name: string;
     email: string;
+    name: string;
     password: string;
     telephones: {
-      number: number;
       area_code: number;
+      number: number;
     }[];
   }) {
     if (!data.telephones || data.telephones.length === 0) {
