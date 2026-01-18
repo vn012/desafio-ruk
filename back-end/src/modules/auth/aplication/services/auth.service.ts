@@ -2,13 +2,15 @@ import {
   Injectable,
   ConflictException,
   BadRequestException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { UserService } from 'src/modules/user/aplication/services/user.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService, private jwtService: JwtService) {}
 
   async signUp(data: {
     name: string;
@@ -42,4 +44,33 @@ export class AuthService {
       modified_at: user.modified_at?.toISOString(),
     };
   }
+  
+  async auth(email: string, password: string): Promise<string> {
+    const user = await this.validateUser(email, password);
+    if (!user) throw new UnauthorizedException('Credenciais inválidas');
+  
+    const payload = {
+      sub: user.id,
+      email: user.email,
+    };
+
+    return this.jwtService.sign(payload);
+  }
+
+  //#region aux
+  private async validateUser(email: string, password: string) {
+    const user = await this.userService.findByEmail(email);
+
+    if (!user) return null;
+    
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      user.password,
+    );
+
+    if (!isPasswordValid) return null;
+    
+    return user;
+  }
+
 }

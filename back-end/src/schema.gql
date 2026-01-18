@@ -16,21 +16,13 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type AuthResponseDto {
-  statusCode: Int!
-  message: String!
-  data: String!
+  token: String!
 }
 
 type SignupDto {
   id: String!
   created_at: String!
   modified_at: String
-}
-
-type SignupResponseDto {
-  statusCode: Int!
-  message: String!
-  data: SignupDto!
 }
 
 type Query {
@@ -41,7 +33,7 @@ type Query {
 type Mutation {
   createUser(data: UserRequestDto!): UserResponseDto!
   SignIn(email: String!, password: String!): AuthResponseDto!
-  SignUp(data: UserRequestDto!): SignupResponseDto!
+  SignUp(data: UserRequestDto!): SignupDto!
 }
 
 input UserRequestDto {
