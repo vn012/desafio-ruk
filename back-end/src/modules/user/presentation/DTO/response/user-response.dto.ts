@@ -10,4 +10,10 @@ export class UserResponseDto {
 
   @Field()
   email: string;
+
+  @Field()
+  password: string;
+
+  @Field()
+  created_at: Date;
 }

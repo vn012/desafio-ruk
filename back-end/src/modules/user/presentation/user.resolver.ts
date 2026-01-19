@@ -5,32 +5,55 @@ import { UserResponseDto } from './DTO/response/user-response.dto';
 // @Resolver(() => UserResponseDto)
 @Resolver(() => UserResponseDto)
 export class UserResolver {
-    constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
-    @Query(() => String, { name: 'teste' })
-    async users(
-        @Args('nameTeste2', { type: () => String }) nameTeste1: string,
-    ): Promise<string> {
-        return this.userService.teste(nameTeste1);
+  @Query(() => [UserResponseDto], { name: 'getAll' })
+  async getAll(): Promise<UserResponseDto[]> {
+    const users = await this.userService.findAll();
+
+    const res: UserResponseDto[] = users.map((user) => ({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      password: '',
+      created_at: user.created_at,
+    }));
+
+    return res;
+  }
+
+  @Query(() => UserResponseDto, { name: 'getUserById' })
+  async getUserById(@Args('id') id: number): Promise<UserResponseDto | null> {
+    const user = await this.userService.findById(id);
+
+    if (!user) return null;
+
+    const res: UserResponseDto = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      password: '',
+      created_at: user.created_at,
     }
+    return res;
+  }
 
-    @Query(() => [UserResponseDto], { name: 'getAll' })
-    async getAll(): Promise<UserResponseDto[]> {
-        return this.userService.finAll();
-    }
+//   @Mutation(() => UserResponseDto, { name: 'createUser' })
+//   async createUser(
+//     @Args('data') data: UserRequestDto,
+//   ): Promise<UserResponseDto> {
+//     const user = await this.userService.create(data);
 
-    //   @Query(() => [User])
-    //   async users() {
-    //     return this.userService.findAll();
-    //   }
+//     // Necessário fazer o automapping manual aqui
+//     const res: UserResponseDto = {
+//       id: user.id,
+//       name: user.name,
+//       email: user.email,
+//       password: '',
+//       created_at: user.created_at,
+//     };
 
-    //   @Query(() => User, { nullable: true })
-    //   async user(@Args('id', { type: () => Int }) id: number) {
-    //     return this.userService.findById(id);
-    //   }
-
-    //   @Mutation(() => User)
-    //   async createUser(@Args('data') data: CreateUserInput) {
-    //     return this.userService.create(data.name, data.email);
-    //   }
+//     return res;
+//   }
+// }
 }

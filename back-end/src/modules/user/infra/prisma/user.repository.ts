@@ -1,29 +1,47 @@
 import { Injectable } from '@nestjs/common';
-import { user } from '../../domain/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Prisma, User } from 'generated/prisma/client';
+import { CreateDbUserDto } from '../../aplication/DTO/create-db-user.dto';
+
 
 @Injectable()
 export class UserRepository {
-    constructor(private readonly prisma: PrismaService) {}
-  // //#region GET
-  // async findAll(): Promise<user[]> {
-  //   return database.users;
-  // }
-  async findAll(): Promise<any> {
-    // return this.prisma.user.findMany();
+  constructor(private readonly prisma: PrismaService) {}
+  //#region GET
+
+  async findAll(): Promise<User[]> {
+    const res = await this.prisma.user.findMany();
+    return res;
   }
 
-  // async findById(id: number): Promise<User | null> {
-  //     return this.prisma.user.findUnique({ where: { id } });
-  // }
-
-  async teste(teste: string): Promise<string> {
-    return teste;
+  async findById(id: number): Promise<User | null> {
+    return this.prisma.user.findUnique({ where: { id } });
   }
+  async findByEmail(email: string): Promise<User | null> {
+    return this.prisma.user.findUnique({ where: { email } });
+  }
+
   //#endregion
 
   //#region  CREATE
 
+  async create(data: CreateDbUserDto) {
+    const userData: Prisma.UserCreateInput = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      telephones: {
+        create: data.telephones,
+      },
+    };
+
+    return this.prisma.user.create({
+      data: userData,
+      include: {
+        telephones: true,
+      },
+    });
+  }
   //#endregion
 
   //#region UPDATE
@@ -32,28 +50,3 @@ export class UserRepository {
   //#region DELETE
   //#endregion
 }
-
-
-export const database = {
-  users: [
-    new user(
-      1,
-      'João Silva',
-      'joao@email.com',
-      '123456',
-      [
-        { number: 999999999, area_code: 11 },
-        { number: 888888888, area_code: 21 },
-      ],
-      new Date('2026-01-01'),
-    ),
-    new user(
-      2,
-      'Maria Souza',
-      'maria@email.com',
-      'abcdef',
-      [{ number: 777777777, area_code: 31 }],
-      new Date('2026-01-05'),
-    ),
-  ],
-};

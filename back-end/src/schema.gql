@@ -6,9 +6,48 @@ type UserResponseDto {
   id: Int!
   name: String!
   email: String!
+  password: String!
+  created_at: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type AuthResponseDto {
+  token: String!
+}
+
+type SignupDto {
+  id: String!
+  created_at: String!
+  modified_at: String
 }
 
 type Query {
-  teste(nameTeste2: String!): String!
   getAll: [UserResponseDto!]!
+  getUserById(id: Float!): UserResponseDto!
+}
+
+type Mutation {
+  SignIn(args: SignInRequestDto!): AuthResponseDto!
+  signUp(args: SignUpRequestDto!): SignupDto!
+}
+
+input SignInRequestDto {
+  email: String!
+  password: String!
+}
+
+input SignUpRequestDto {
+  name: String!
+  email: String!
+  password: String!
+  telephones: [TelephoneInput!]!
+}
+
+input TelephoneInput {
+  number: Int!
+  area_code: Int!
 }
