@@ -1,29 +1,26 @@
-// import { http } from '@/infra/http';
-import { Credentials } from '@/Dto/credentials';
-import { AuthResponse } from '@/Dto/auth-response';
+import { GraphQLClient, ClientError  } from 'graphql-request';
 
-export const AuthService = {
-  async login(payload: Credentials): Promise <AuthResponse> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const obj: AuthResponse = {
-          token: "@edsaiTOKEN",
-          message: "Login successful"
-        };
-        resolve(obj);
-      }, 1000); 
-    });
+export async function signInService(email: string, password: string) {
+  const client = new GraphQLClient(process.env.NEXT_PUBLIC_API_URL!);
 
-    const { data } = await http.post<AuthResponse>(
-      '/auth/login',
-      payload
-    );
+  try {
+    console.log("1aa")
+    const res = await client.request(`
+      mutation SignIn($args: SignInRequestDto!) {
+        signIn(args: $args) {
+          token
+        }
+      }
+    `, { args: { email, password } });
 
-    return data;
-  },
+    return res;
+  } catch (error) {
+    if (error instanceof ClientError) {
+      console.error('!GraphQL Error:', error.response.errors);
+      throw new Error(error.response.errors?.[0]?.message || 'Erro na autenticação');
+    }
 
-  logout() {
-    localStorage.removeItem('token');
-  },
-
-};
+    console.error('Unexpected Error:', error);
+    throw new Error('Erro inesperado. Tente novamente mais tarde.');
+  }
+}

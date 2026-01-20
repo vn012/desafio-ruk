@@ -3,13 +3,15 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
 import { Credentials } from "@/Dto/credentials";
+import { signInAction } from "../actions/auth.acation";
 export default function LoginPage() {
-  const { login, error } = useAuth();
-  const [form, setForm] = useState<Credentials>({ username: '', password: '' });
+  const [form, setForm] = useState<Credentials>({ email: '', password: '' });
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault(); 
-    login(form);
+  async function handleSubmit(e: React.FormEvent) {
+    console.log("passou por aqui")
+    e.preventDefault();
+    await signInAction(form.email, form.password);
+    window.location.href = '/home';
   }
 
   return (
@@ -26,7 +28,7 @@ export default function LoginPage() {
       <div className="flex items-center justify-center bg-white md:col-span-1">
         <div className="w-full max-w-md p-8">
             <div className="mb-3">
-                Logo here
+                Logo here22
             </div>
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">
             Nice to see you again
@@ -42,7 +44,7 @@ export default function LoginPage() {
                     type="text"
                     placeholder="Email or phone number"
                     className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400 text-gray-800"
-                    onChange={ (e) => setForm({ ...form, login: e.target.value }) }
+                    onChange={ (e) => setForm({ ...form, email: e.target.value }) }
                     />
                 </div>
 
@@ -62,9 +64,9 @@ export default function LoginPage() {
 
 
 
-                {error && (
+                {/* {error && (
                     <p className="text-sm text-red-500">{error}</p>
-                )}
+                )} */}
 
 
 
@@ -90,12 +92,12 @@ export default function LoginPage() {
                     type="submit"
                     className="w-full mt-4 rounded-lg bg-blue-600 py-2 text-white font-medium hover:bg-blue-700 transition"
                 >
-                    Sign in
+                    Sign ins
                 </button>
 
                 {/* Sign up */}
                 <p className="text-center text-sm text-gray-600 mt-11">
-                    Don’t have an account?{' '}
+                    Don’t have an accousssnt?{' '}
                     <a
                     href="/signup"
                     className="text-blue-600 font-medium hover:underline"

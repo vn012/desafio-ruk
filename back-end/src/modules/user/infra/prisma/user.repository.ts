@@ -12,10 +12,13 @@ export class UserRepository {
   async findAll(): Promise<User[]> {
     const res = await this.prisma.user.findMany();
     return res;
+
+    
   }
 
   async findById(id: number): Promise<User | null> {
     return this.prisma.user.findUnique({ where: { id } });
+    
   }
   async findByEmail(email: string): Promise<User | null> {
     return this.prisma.user.findUnique({ where: { email } });
@@ -50,3 +53,26 @@ export class UserRepository {
   //#region DELETE
   //#endregion
 }
+
+
+
+const USERS_MOCK: User[] = [
+  {
+    id: 1,
+    name: 'Admin',
+    email: 'admin@email.com',
+    password: '123456',
+    created_at: new Date('2024-01-01'),
+    modified_at: null,
+    deleted_at: null,
+  },
+  {
+    id: 2,
+    name: 'User',
+    email: 'user@email.com',
+    password: '123456',
+    created_at: new Date('2024-01-10'),
+    modified_at: null,
+    deleted_at: null,
+  },
+];

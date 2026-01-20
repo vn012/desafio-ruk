@@ -10,12 +10,14 @@ import { SignInRequestDto } from './DTO/request/signIn-request.dto';
 export class AuthResolver {
   
   constructor(private readonly authService: AuthService) { }
-  @Mutation(() => AuthResponseDto, { name: 'SignIn' })
+  @Mutation(() => AuthResponseDto, { name: 'signIn' })
   @Public()
   async SignIn(
     _parent: any,
     @Args('args') args: SignInRequestDto,
   ): Promise<AuthResponseDto> {
+    console.log("1Finding user by email:");
+
     const { email, password } = args;
     return this.authService.auth(email, password);
   }

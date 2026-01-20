@@ -7,7 +7,6 @@ import {
 import * as bcrypt from 'bcrypt';
 import { UserService } from 'src/modules/user/aplication/services/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { AuthResponseDto } from '../../presentation/DTO/response/auth-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -64,15 +63,15 @@ export class AuthService {
   //#region aux
   private async validateUser(email: string, password: string) {
     const user = await this.userService.findByEmail(email);
-
+    console.log("2Found user:", user);
     if (!user) return null;
     
-    const isPasswordValid = await bcrypt.compare(
-      password,
-      user.password,
-    );
+    // const isPasswordValid = await bcrypt.compare(
+    //   password,
+    //   user.password,
+    // );
 
-    if (!isPasswordValid) return null;
+    // if (!isPasswordValid) return null;
     
     return user;
   }

@@ -1,0 +1,15 @@
+# Mutations
+
+mutation SignIn($args: SignInRequestDto!) {
+  signIn(args: $args) {
+    token
+  }
+}
+
+mutation SignUp($args: SignUpRequestDto!) {
+  signUp(args: $args) {
+    id
+    created_at
+    modified_at
+  }
+}

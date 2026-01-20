@@ -31,7 +31,7 @@ type Query {
 }
 
 type Mutation {
-  SignIn(args: SignInRequestDto!): AuthResponseDto!
+  signIn(args: SignInRequestDto!): AuthResponseDto!
   signUp(args: SignUpRequestDto!): SignupDto!
 }
 

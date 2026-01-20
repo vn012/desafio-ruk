@@ -1,44 +1,37 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { AuthService } from '@/services/auth.service';
-import { Credentials } from '@/Dto/credentials';
-
+import { useSignInMutation,} from '@/graphql/generated';
 
 export function useAuth() {
-//   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+ const [signInMutation, { data, loading, error }] = useSignInMutation();
   const router = useRouter();
 
-  async function login(credentials: Credentials) {
+  const signIn = async (email: string, password: string) => {
     try {
-      setError(null);
+      const result = await signInMutation({
+        variables: {
+          args: { email, password },
+        },
+      });
 
-      const data = await AuthService.login(credentials);
-
-      if (!data.token) {
-        setError('Credenciais inválidas');
-        return;
-      }
-
-      localStorage.setItem('token', data.token);
-      router.push('/home');
-
-    } catch (err: any) {
-      setError('Credenciais inválidas');
-    } finally {
+      return result.data?.signIn.token ?? null;
+    } catch (err) {
+      console.error('Erro no login:', err);
+      return null;
     }
-  }
+  };
 
   function logout() {
-    AuthService.logout();
+    // AuthService.logout();
     router.push('/login');
   }
 
   return {
-    login,
-    logout,
+    signIn,
+    data,
+    loading,
     error,
   };
+
 }
